@@ -3,11 +3,33 @@ import { Request, Response, RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
+interface CustomRequest extends Request {
+    user?: {
+        id: string;
+    };
+}
+
+interface CreateUserBody {
+    name: string;
+    email: string;
+    password: string
+}
+
 class UserAuthentication {
-    static register: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-        const { name, email, password } = req.body;
+    /**
+     * @description Register a new user
+     * @route POST /user/register
+     * @req {CustomRequest} req - The request object
+     * @res {Response} res - The response object
+     */
+    static async register(
+        req: CustomRequest & { body: CreateUserBody }, 
+        res: Response): Promise<void> {
+        
 
         try {
+            const { name, email, password } = req.body;
             // Check if the user already exists
             const existingUser = await User.findOne({ where: { email } });
             if (existingUser) {
@@ -43,10 +65,12 @@ class UserAuthentication {
         }
     };
 
-    static login: RequestHandler = async (req: Request, res: Response): Promise<void> => {
-        const { email, password } = req.body;
+    static async login(
+        req: CustomRequest & { body: CreateUserBody}, 
+        res: Response): Promise<void> {
 
         try {
+            const { email, password } = req.body;
             // Find the user by email
             const user = await User.findOne({ where: { email } });
             if (!user) {

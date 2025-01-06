@@ -71,7 +71,6 @@ class BoardController {
         }
     }
 
-/*************  ✨ Codeium Command ⭐  *************/
     /**
      * @description Delete a board by ID
      * @route DELETE /board/delete/:id
@@ -79,7 +78,6 @@ class BoardController {
      * @res {Response} res - The response object
      * @id user_id - The ID of the user
      */
-/******  8b2ead26-7cce-419d-bf5e-abc714b8b2d6  *******/
     static async deleteBoard(req: CustomRequest, res: Response): Promise<void> {
         try {
             const user_id = req.user?.id;

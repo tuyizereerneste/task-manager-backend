@@ -13,7 +13,6 @@ interface CreateBoardBody {
 
 class BoardController {
 
-/*************  ✨ Codeium Command ⭐  *************/
     /**
      * @description Create a new board for a user
      * @route POST /board/create-board
@@ -21,7 +20,6 @@ class BoardController {
      * @res {Response} res - The response object
      * @id user_id - The ID of the user
      */
-/******  c791b85f-a3ed-40f2-8064-a2cb728b19bb  *******/
     static async createBoard(
         req: CustomRequest & { body: CreateBoardBody },
         res: Response
@@ -73,6 +71,15 @@ class BoardController {
         }
     }
 
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * @description Delete a board by ID
+     * @route DELETE /board/delete/:id
+     * @req {CustomRequest} req - The request object
+     * @res {Response} res - The response object
+     * @id user_id - The ID of the user
+     */
+/******  8b2ead26-7cce-419d-bf5e-abc714b8b2d6  *******/
     static async deleteBoard(req: CustomRequest, res: Response): Promise<void> {
         try {
             const user_id = req.user?.id;

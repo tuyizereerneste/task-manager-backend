@@ -65,6 +65,13 @@ class UserAuthentication {
         }
     };
 
+        /**
+         * @description Login a user
+         * @route POST /user/login
+         * @req {CustomRequest} req - The request object
+         * @res {Response} res - The response object
+         * @payload {string} email - jwt token associated with the user
+         */
     static async login(
         req: CustomRequest & { body: CreateUserBody}, 
         res: Response): Promise<void> {

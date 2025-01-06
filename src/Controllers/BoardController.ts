@@ -12,6 +12,16 @@ interface CreateBoardBody {
 }
 
 class BoardController {
+
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * @description Create a new board for a user
+     * @route POST /board/create-board
+     * @req {CustomRequest} req - The request object
+     * @res {Response} res - The response object
+     * @id user_id - The ID of the user
+     */
+/******  c791b85f-a3ed-40f2-8064-a2cb728b19bb  *******/
     static async createBoard(
         req: CustomRequest & { body: CreateBoardBody },
         res: Response
@@ -41,6 +51,14 @@ class BoardController {
         }
     }
     
+
+    /**
+     * @description Get all boards for a specific user
+     * @route GET /board/my-boards
+     * @req {CustomRequest} req - The request object
+     * @res {Response} res - The response object
+     * @id user_id - The ID of the user
+     */
     static async getUserBoards(req: CustomRequest, res: Response): Promise<void> {
         try {
             const user_id = req.user?.id;

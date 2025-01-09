@@ -1,20 +1,26 @@
-// index.ts
 import express from "express";
 import { connectDB, sequelize } from "./utils/database";
 import routes from "./routes/routes";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
-
 
 const startServer = async () => {
   try {
     // Connect to the database
     await connectDB();
 
-    // Sync the database (use cautiously in production)
-    await sequelize.sync({ force: false }); // Set force to true only if you need to drop and recreate tables
-    console.log("Database synchronized successfully.");
+    // Synchronize database schema
+    if (process.env.NODE_ENV === "development") {
+      // Use alter: true in development to apply model changes
+      await sequelize.sync({ alter: true });
+      console.log("Database schema updated in development mode.");
+    } else {
+      console.log("Skipping sync in production. Use migrations instead.");
+    }
 
     // Apply routes
     app.use("/", routes);
@@ -27,8 +33,8 @@ const startServer = async () => {
   } catch (error) {
     console.error("Error during server startup:", error);
   }
-  
 };
+
 startServer();
 
 export default startServer;

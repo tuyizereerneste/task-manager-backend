@@ -7,8 +7,8 @@ class Task extends Model {
   public id!: string;
   public title!: string;
   public description!: string;
-  public priority!: string;
-  public status!: string;
+  public priority!: 'LOW' | 'MEDIUM' | 'HIGH';
+  public status!: 'To Do' | 'In Progress' | 'Completed';
   public due_date!: Date;
   public creator_id!: string;
   public assignee_id!: string;
@@ -56,6 +56,11 @@ Task.init(
     board_id: {
       type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: Board, // This should match the table name of the Board model
+        key: "id",
+      },
+      onDelete: "CASCADE", // Automatically delete tasks when the board is deleted
     },
     created_at: {
       type: DataTypes.DATE,
@@ -67,12 +72,19 @@ Task.init(
     sequelize,
     tableName: "Tasks",
     timestamps: false,
+    hooks: {
+      beforeCreate: (task: Task) => {
+        if (!task.assignee_id) {
+          task.assignee_id = task.creator_id;
+        }
+      },
+      beforeUpdate: (task: Task) => {
+        if (!task.assignee_id) {
+          task.assignee_id = task.creator_id;
+        }
+      },
+    },
   }
 );
-
-// Define associations
-//Task.belongsTo(User, { foreignKey: 'creator_id', as: 'creator' });
-//Task.belongsTo(User, { foreignKey: 'assignee_id', as: 'assignee' });
-//Task.belongsTo(Board, { foreignKey: 'board_id', as: 'board' });
 
 export default Task;

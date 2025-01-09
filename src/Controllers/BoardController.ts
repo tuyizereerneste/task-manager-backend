@@ -84,10 +84,18 @@ class BoardController {
             if (!user_id) {
                 res.status(401).json({ error: "Unauthorized" });
             }
+    
             const { id } = req.params;
-            await Board.destroy({ where: { id, user_id } });
-            console.log('Board deleted successfully');
-            res.status(200).json({ message: "Board deleted successfully" });
+    
+            // Destroy the board, which will also delete related tasks due to the cascade delete
+            const deletedBoard = await Board.destroy({ where: { id, user_id } });
+    
+            if (deletedBoard === 0) {
+                res.status(404).json({ error: "Board not found" });
+            }
+    
+            console.log('Board and related tasks deleted successfully');
+            res.status(200).json({ message: "Board and related tasks deleted successfully" });
         } catch (error) {
             console.error('Error deleting board:', error);
             res.status(500).json({ error: "Internal Server Error" });

@@ -102,6 +102,28 @@ class TaskController {
             }
         }
 
+        static async getTasksByStatus(req: CustomRequest, res: Response): Promise<void> {
+            try {
+                const creator_id = req.user?.id;
+                const { board_id, status } = req.body;
+    
+                if (!creator_id) {
+                    console.error("Unauthorized");
+                    res.status(401).json({ error: "Unauthorized" });
+                    return;
+                }
+    
+                const tasks = await Task.findAll({ where: { creator_id, board_id, status } });
+    
+                console.log("Tasks fetched successfully:");
+                res.status(200).json({ tasks });
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+                res.status(500).json({ error: "Internal Server Error" });
+            }
+        }
+       
+
         static async deleteTask(req: CustomRequest, res: Response): Promise<void> {
             try {
                 const creator_id = req.user?.id;

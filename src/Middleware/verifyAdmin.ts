@@ -6,7 +6,7 @@ interface CustomRequest extends Request {
     user?: { id: string; role: string };
 }
 
-export const verifyUser = (req: CustomRequest, res: Response, next: NextFunction): void => {
+export const verifyAdmin = (req: CustomRequest, res: Response, next: NextFunction): void => {
     const token = req.header("x-auth-token");
     if (!token) {
         res.status(401).json({ error: "Access denied. No token provided." });
@@ -18,7 +18,7 @@ export const verifyUser = (req: CustomRequest, res: Response, next: NextFunction
         const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string; role: string };
 
         // Check if the role is specifically "USER"
-        if (!decoded || decoded.role !== "USER") {
+        if (!decoded || decoded.role !== "ADMIN") {
             res.status(403).json({ error: "Access denied. Users only." });
             return;
         }

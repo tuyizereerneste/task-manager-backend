@@ -1,18 +1,25 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../utils/database";
+import { queryObjects } from "v8";
+
+enum Role {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
 
 class User extends Model {
   public id!: number;
   public name!: string;
   public email!: string;
   public password!: string;
+  public role!: Role;
 }
 
 // Initialize the model
 User.init(
   {
     id: {
-      type: DataTypes.UUID,  // Change to UUID if you want consistency across models
+      type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
@@ -29,6 +36,11 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.ENUM(...Object.values(Role)),
+      allowNull: false,
+      defaultValue: Role.USER,
+    }
   },
   {
     sequelize,
@@ -36,8 +48,5 @@ User.init(
   }
 );
 
-// Define associations
-//User.hasMany(Task, { foreignKey: 'creator_id', as: 'createdTasks' }); // One user can create many tasks
-//User.hasMany(Task, { foreignKey: 'assignee_id', as: 'assignedTasks' }); // One user can be assigned many tasks
-
 export default User;
+export { Role };

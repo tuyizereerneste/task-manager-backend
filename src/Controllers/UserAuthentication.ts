@@ -170,6 +170,29 @@ class UserAuthentication {
         }
     }
 
+    static async profile(req: CustomRequest, res: Response): Promise<void> {
+        try {
+            const userId = req.user?.id;
+    
+            if (!userId) {
+                res.status(401).json({ error: "Unauthorized" });
+                return;
+            }
+            const user = await User.findOne({ where: { id: userId } });
+    
+            if (!user) {
+                res.status(404).json({ error: "User not found" });
+                return;
+            }
+    
+            res.status(200).json({ user });
+        } catch (error) {
+            console.error("Error fetching user:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    }
+    
+
 
 }
 

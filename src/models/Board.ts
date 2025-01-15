@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { sequelize } from "../utils/database";
+import Task from "./Tasks";
 
 class Board extends Model {
   public id!: string;
@@ -37,7 +38,5 @@ Board.init(
   }
 );
 
-// Define associations
-//Board.hasMany(Task, { foreignKey: 'board_id', as: 'tasks' });
 
 export default Board;

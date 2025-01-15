@@ -4,11 +4,16 @@ import BoardController from "../Controllers/BoardController";
 import { verifyUser } from "../Middleware/verifyUser";
 import TaskController from "../Controllers/TaskController";
 import { verifyAdmin } from "../Middleware/verifyAdmin";
+import PasswordController from "../Controllers/PasswordCotroller";
+import SearchController from "../Controllers/SearchController";
 
 const router = Router();
 
 router.post("/user/register", UserAuthentication.register);
 router.post("/user/login", UserAuthentication.login);
+router.post("/user/change-password", verifyUser, PasswordController.changePassword);
+router.get("/user/my-profile", verifyUser, UserAuthentication.profile);
+
 router.get("/admin/get-all-users", verifyAdmin, UserAuthentication.getAllUsers);
 router.get("/admin/get-user/:id", verifyAdmin, UserAuthentication.getUserById);
 router.delete("/admin/delete-user/:id", verifyAdmin, UserAuthentication.deleteUser);
@@ -23,6 +28,9 @@ router.get("/task/my-tasks", verifyUser, TaskController.getTasks);
 router.get("/task/get-task-by-status", verifyUser, TaskController.getTasksByStatus);
 router.delete("/task/delete/:task_id", verifyUser, TaskController.deleteTask);
 router.put("/task/update-task/:task_id", verifyUser, TaskController.updateTask);
+
+router.get("/search", verifyUser, SearchController.searchQuery);
+router.get("filter", verifyUser, SearchController.filterQuery);
 
 
 
